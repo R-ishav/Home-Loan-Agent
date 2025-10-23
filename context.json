@@ -1,0 +1,88 @@
+{
+  "agent_name": "Corporate Home Loan Eligibility Agent",
+  "version": "1.0",
+  "description": "Determines accurate and policy-aligned home loan eligibility for corporate employees based on salary, designation, experience, and HR/finance policies.",
+  
+  "context": {
+    "company_policy": {
+      "max_loan_to_salary_ratio": 60,
+      "base_interest_rate": 8.5,
+      "experience_bonus_threshold": 5,
+      "experience_bonus_percentage": 10,
+      "designation_weightage": {
+        "Intern": 0.5,
+        "Junior Engineer": 1.0,
+        "Senior Engineer": 1.5,
+        "Manager": 2.0,
+        "Senior Manager": 2.5,
+        "Director": 3.0
+      },
+      "max_loan_cap": 15000000,
+      "min_service_years_required": 1
+    },
+
+    "data_schema": {
+      "employee_id": "string",
+      "name": "string",
+      "designation": "string",
+      "monthly_salary": "number",
+      "years_of_experience": "number",
+      "existing_loans": "number",
+      "credit_score": "number"
+    },
+
+    "policy_context_rules": [
+      "Loan eligibility = (monthly_salary × max_loan_to_salary_ratio) × (designation_weightage)",
+      "Add experience bonus if years_of_experience >= experience_bonus_threshold",
+      "Reduce eligibility by 10% if existing loans > 0",
+      "Reject if years_of_experience < min_service_years_required",
+      "Interest rate = base_interest_rate ± adjustments based on credit_score"
+    ]
+  },
+
+  "example_inputs": [
+    {
+      "employee_id": "EMP1023",
+      "name": "Rohan Mehta",
+      "designation": "Senior Engineer",
+      "monthly_salary": 120000,
+      "years_of_experience": 7,
+      "existing_loans": 1,
+      "credit_score": 780
+    },
+    {
+      "employee_id": "EMP2045",
+      "name": "Priya Sharma",
+      "designation": "Manager",
+      "monthly_salary": 180000,
+      "years_of_experience": 10,
+      "existing_loans": 0,
+      "credit_score": 820
+    }
+  ],
+
+  "expected_output_format": {
+    "employee_id": "string",
+    "eligible_loan_amount": "number",
+    "recommended_interest_rate": "number",
+    "remarks": "string",
+    "policy_reference": "string"
+  },
+
+  "example_outputs": [
+    {
+      "employee_id": "EMP1023",
+      "eligible_loan_amount": 9000000,
+      "recommended_interest_rate": 8.3,
+      "remarks": "Eligible with experience bonus applied; minor deduction due to existing loan.",
+      "policy_reference": "HR Loan Policy 2025 - Section 3.2"
+    },
+    {
+      "employee_id": "EMP2045",
+      "eligible_loan_amount": 12960000,
+      "recommended_interest_rate": 8.1,
+      "remarks": "High eligibility; no existing loans; strong credit score.",
+      "policy_reference": "HR Loan Policy 2025 - Section 3.2"
+    }
+  ]
+}
